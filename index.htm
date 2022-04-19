@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+  <title>SvgScript Demo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" type="text/css" media="screen,projection"/>
+  <script src="SvgScript.js"></script>
+  <script>
+  var testSuite = [
+    {     
+    'h2':   'Test TXT', 
+    'p':    'Variables. Output system variables. Division operator.', 
+    'code': 'SVG500,200 M10,20 TXT"X121:" m100,0 TXT"Y1:" ' + 
+            'm50,0 TXT"F:" m100,0  TXT"W:" m100,0 TXT"S:" ' + 
+            'M10,60 $b=137 TXT$b $b/=2 m50,0 TXT"b=137/2=" m150,0 TXT $b ' 
+    }, {
+      'h2':   'Test of loop',
+      'p':    'Lines drawn using absolute and relative coordinates. Parallel lines turning down. ',
+      'code': 'SVG500,500 $Z=250 #"loop" M10,$Z L100,$Z m10,0 L200,$Z l295,295 $Z-=10 BNE"loop",$Z',
+    }, {
+      'h2':   'Trapeze',
+      'p':    'Test of loop and variables. Absolute and relative coordinates.',
+      'code': 'SVG500,500 $N=350 #"loop" M$N,$N l100,0 l0,100 l-50,0 l-50,-100 $N-=10 BNE"loop",$N',   
+    }, {
+      'h2':   'Test of Triangle, T[ra][ra] ',
+      'p':    'There is no svg-triangle-tag so this one is created using the path-tag. Taa means we use absolute coordinates, whereas Trr means we use relative coordinates, i.e. relative to last m or M statement. Taa is a shorthand for M x1 y1 L x2 y2 L x3 y3 Z. Invoking T[ra][ra] finishes current path.',
+      'code': 'SVG500,500 #"main" F"BLUE" SC"RED" SW8 Taa100,100,300,100,200,400',         
+    }, {
+      'h2':   'Test of loop and variables.',
+      'p':    'Triangles are drawn using path. Use of variables. Four overlapping triangles - shifted top. All is painted as one figure.',
+      'code': 'SVG500,210 F"GREEN" SC"RED" SW3 $N=4 $Z=350 #"loop" M $Z 0 L 75 200 L 225 200 Z $Z-=50 $N-- BNE"loop",$N',
+    }, {
+      'h2':   'Test Arc, ARC',
+      'p':    'Angle is measured clockwise. Green filled arc goes from 195 to 75 degrees and red filled arc goes from 75 to 190 degreees. In native A you specify start and end points, whereas here you specify center and radii.',
+      'code': 'SVG500,500 SW4 F"GREEN" M240,260 ARC50,100,190,75 F"RED" M270,225 ARC110,220,75,190 ', 
+    }, {
+      'h2':   'Test of Rectangle, RCT. Swedish Flag',
+      'p':    'An ordinary svg-rect cannot be rotated so the R here is translated into a path-tag. The flag is rotated fortyfive degrees clockwise around midpoint (160,100)',
+      'code': 'SVG500,300 F"BLUE" SW0 SC"NONE" ROT160,100,45 RCT320,200 F"YELLOW" M80,0 RCT40,200 M0,80 RCT320,40',  
+    }, {
+      'h2':   'Expanding circle',
+      'p':    'Code entry is at #!. Subroutine and variables used.',
+      'code': 'SVG500,500 #"circle" CIR $R RTS #"main" $R=250 F"none" #"loop" M$R,250 JSR"circle" $R-=10 BNE"loop",$R',    
+    }, {
+      'h2':   'Flower' ,
+      'p':    'Application of rotation filter, ROT and POP in loop.',
+      'code': 'SVG500,500 F"RED" SC"GREEN" SW2 $N=36 $Z=0 #"lp" ROT250,250,$Z M260,250 l150,0 CIR10 $Z+=10  POP $N-- BNE"lp",$N', 
+    }, {
+      'h2':   'Path arc',
+      'p':    'Rotation filter is applied to path. By setting ID"" we separate paths into tags that get filled separately.',
+      'code': 'SVG500,500 F"BLUE" SC"BLACK" SW2 $W=360 #"loop" ID"rotflower" ROT250,250,$W M 150 200 A 100 70 0 0 0 200 100 Z $W-=20 POP BNE"loop",$W ', 
+    }, {
+      'h2':   'Many triangles',
+      'p':    'Figure obtained by rotation and scale (magnification) of these. Relative coordinates. First triangle is drawn with red lines.',
+      'code': 'SVG500,500 SW0.5 F"none" SC"RED" $N=18 $Z=0 #"b1" SCL250,250,-0.5 ROT250,250,$Z TRL50,0 Tar200,220,100,0,50,100 SC"BLACK" $Z+=20 $N-- POP POP POP BNE"b1",$N ', 
+    }, {
+      'h2':   'Test of circle, CR, and ellipse, EL',
+      'p':    'Ordinary svg-ellipse-tag cannot be rotated. Ellipse here is drawn using the arc, A, command in a path tag. Ellipse with hole is rotated fortyfive degrees.',
+      'code': 'SVG500,500 F"YELLOW" SC"RED" SW10 M60,60 CIR430 SC"BLUE" F"ORANGE" ROT250,250,45 M250,250 ELL80,200 POP M250,250 SW5 F"WHITE" CIR10' , 
+    }, {
+      'h2':   'Test of Ellipse, ELL, command',
+      'p':    'Many ellipses',
+      'code': 'SVG500,500 F"none" $N=18 $B=200 $D=10 #"b1" M250,250 ELL$B,$D $B-=10 $D+=10 $N-- BNE"b1",$N ', 
+    }, {
+      'h2':   'Geometric figure.',
+      'p':    'Quadratic Bezier curve with applied rotation SCL .,.,1 means no scaling.',
+      'code': 'SVG500,500 SC"BLACK" SW1 SCL250,250,1.5 $W=360 #"loop" F"TRANSPARENT" ROT250,250,$W M10,80 Q 52.5 10 95 80 t 180 0 Z CIR20 F"RED" CIR10 $W-=20 POP BNE"loop",$W M250,250 F"YELLOW" CIR130 ', 
+    }, {
+      'h2':   'Spiral of rotated smileys',
+      'p':    'Smiley is defined in subroutine. Script entry at #"main"',
+      'code': 'SVG500,500 #"smiley" M250,250 F"RED" CIR50 F"ORANGE" M230,270 Q250,290 270,270 Z M230,235 CIR10 M270,235 CIR10 RTS ' + 
+              '#"main" M0,0 F"ORANGE" RCT500,500 SC"GREEN" SW4 $D=1.05 $N=30 $W=0 $INC=0.1 ' + 
+              '#"loop" ROT250,250,$W SCL250,250,$D TRL190,0 JSR"smiley" POP POP POP $N-- $W+=40 $INC+=0.1 $D+=$INC BNE"loop",$N ',
+    }, {
+      'h2'  : 'Multiple transitive reflections',
+      'p'   : 'Subroutine with loop. Using SHIFT. Script entry at #!. Symmetric end result.',
+      'code': 'SVG500,500 #"rotFlower" F"RED" SC"GREEN" SW2 $N=18 $Z=0 ' + 
+              '#"lp" ROT100,100,$Z M110,100 l50,0 CIR5 $Z+=20 POP $N-- BNE"lp",$N RTS' + 
+              '#"main" F"LIGHTGRAY" RCT500,500 ' + 
+              'REF250,250,250,260 REF250,250,260,260 REF250,250,250,260 TRL40,40 $N2=4 ' + 
+              '#"mlop" JSR"rotFlower" SHIFT $N2-- BNE"mlop",$N2 ', 
+    }, {
+      'h2':   'More transitive reflections',
+      'p':    'Rotations, reflections and scaling of square for cool effect. This code highlights some problems with svgscript. Many variable names such as a,m are commands for arc or move hence cannot be used. There should be a way to do this without reflections. TODO: if possible command two capital letters. Variable names lower case. Overlap between path commands that use m and M complicates this.',
+      'code': 'SVG500,500 #"zoomfigure" $I=20 $W=250 $V=0  #"rect" ROT125,125,$V $Z=250 $Z-=$W $Z/=2 M$Z,$Z RCT$W,$W POP $W*=0.79 $V+=18 $I-- BNE"rect",$I RTS #"main" SC"RED" SW1 #"load reflections into transform pipe" REF250,250,260,250 REF250,250,250,260 REF250,250,260,250 $J=4 #"mainloop" JSR"zoomfigure" POP $J-- BNE"mainloop",$J', 
+    }, {
+      'h2':   'More transitive reflections - higher line density',
+      'p':    'Same as previous but higher line density.',
+      'code': 'SVG500,500 #"zoomfigure" $I=61 $W=250 $V=0  #"rect" ROT125,125,$V $Z=250 $Z-=$W $Z/=2 M$Z,$Z RCT$W,$W POP $W*=0.95 $V+=3 $I-- BNE"rect",$I RTS #"main" SC"RED" SW 1 #"load reflections into transform pipe" REF250,250,260,250 REF250,250,250,260 REF250,250,260,250 $J=4 #"mainloop" JSR"zoomfigure" POP $J-- BNE"mainloop",$J', 
+    }, {
+      'h2':   'More translations and rotations and scale of square',
+      'p':    'Cool effect. SCL works by setting a midpoint and then a distance value that is added to one(?). SCLx,y,1 means focal plane',
+      'code': 'SVG500,500 #"zoomfigure" $I=40 $V=0 $Z=1 #"rect" M0,0 ROT125,125,$V SCL125,125,$Z RCT250,250 $V+=4 $Z*=1.07 $I-- POP POP BNE"rect",$I RTS #"main" SC"RED" SW2 JSR"zoomfigure" TRL250,0 JSR"zoomfigure" TRL0,250 JSR"zoomfigure" TRL-250,0 JSR"zoomfigure"',
+    }, {
+      'h2':   'Fractal Tree',
+      'p':    'Script entry at #"main". Small letters are locally scoped. Transformations pipeline is executed in reverse order. I.e. last transformation added is first performed on the object coordinates. RZR means return if zero.',
+      'code': 'SVG500,500 #"drawTree"($d) RZR,$d $d-- ROT250,422,-35 SCL250,300,1.5 JSR"drawTree"($d) POP POP ROT250,350,45 SCL250,220,2 JSR"drawTree"($d) POP POP SC $COLS[$d] M250,480 L250,20  RTS  #"main"  $COLS=["green","green","gray", "brown", "brown"] SC"BROWN" SW8 $W1=45 $W2=-45  JSR"drawTree"(5)',
+    },
+ ]; 
+  </script>
+</head>
+
+<a href="/sanguine/index.htm"> &uarr; TOP  &uarr; </a>
+<h1>SvgScript Demo</h1>
+<!-- <p>Leonard Ilanius June 2020 </p> -->
+
+<h2>Synopsis </h2>
+<p>
+<br>
+ Usage: svgOutText = SvgScript.run('script code'); <br>
+<br>
+SvgScript - shorthand for outputting svg tags. 
+It is an idiosyncratic eclectic mix of 6502 assembler (JSR, jump sub- 
+routine and RTS, return subroutine), postfix script and of course 
+svg-tags. It enables concise coding of the following svg tags: 
+    circle, ellipse, rectangle, line, path, and text<br>
+<br>
+Polyline and filters are not yet included. 
+The following parameters are available:<br>
+        stroke, set stroke color using SC, e.g. SC"GREEN" <br>
+        stroke-width, set using SW, e.g. SW2 <br>
+        fill color, set using F, e.g. F"RED" or F"rgb(255,0,0)". <br>
+The hex coding format ( F"#FF0000" may not work for css background images. <br>
+ <br>
+Paths are coded using PS (path start) and PE (path end), e.g. <br>
+ PS M250 250 L320 320 PE translates into <br>
+ &lt;path d="M250 250 L320 320" fill="?" stroke-width="?" stroke="?" /&gt; <br>
+ which is the line (250,250) to (320,320) in the coordinate system. <br>
+<br> 
+ Filter functionality is supplied. A filter is a matrix 
+ operation that is performed on coordinates and that codes for SCL 
+ (scaling), REF (reflection), TRL (translation) and ROT (rotation). 
+ They may be added on a stack and the operations are performed in 
+ the order last in first executed.  <br>
+<br>
+ 
+ Variables prefixed with $ can be assigned values using the operators: ++, --, +=,
+  -=, =, /= and *=. Upper case variables are global and lower case
+  are locally scoped <br>
+<br>
+
+</p>
+
+  <br>
+  <div id="outputdiv">
+  </div>
+  <script>
+    var out = '';
+    for ( var i in testSuite ) {
+    // for ( var i=19; i < 20; i++  ) {
+        var itm = testSuite[i];
+        console.log( itm['h2'] );
+        var img = SvgScript.run( itm['code'] );
+        out += 
+            '<h2>'+ i + '. ' + itm['h2'] + '</h2>' + 
+            '<p>'+ itm['p'] + '</p>' + 
+            img +'<p class="code"><b>CODE:</b><i>'+ 
+            itm['code']+'</i></p><p>' + 
+            'Code:' + itm['code'].length + ' bytes. Image:' + img.length + ' bytes. Ratio:' + (itm['code'].length*100/img.length).toFixed(2) + '% <br><br>';
+ 
+    }    
+    document.getElementById('outputdiv').innerHTML = out;
+    
+  </script>
+
+  <script>
+  function update() {
+    var inp = document.getElementById( 'scriptin' ).value;
+    var out = SvgScript.run( inp );
+    document.getElementById('scriptout').innerHTML = out;
+    document.getElementById('scriptoutCode').textContent = out;
+  }
+  </script>
+
+  <h2> Try yourself </h2>
+  <table>
+    <tr>
+     <th>Image </th> <th>Generated Code </th>
+    </tr>
+    <tr>
+      <td>
+        <div id="scriptout" class="scriptout" ></div> 
+      </td>
+      <td>
+        <div id="scriptoutCode" class="scriptout"></div> 
+      </td>
+    </tr>
+  </table>
+
+  <br>
+  <p>Enter code here and press update.</p>
+  <textarea rows="6" id="scriptin" name="scriptin">SVG500,500 M100,100 SW2 
+    F"RED" RCT300,300 M250,250 F"WHITE" CIR170 F"RED" Taa250,130,350,350,150,350
+  </textarea><br>
+  <button onclick="update();">update</button>
+  <script>
+   update();
+  </script>
+<br> <br> <br>
+<br> <br> <br>
+<br> <br> <br>
+<p> TODO</p>
+<p> color #DDEEAA to RGA()</p>
+<p>  line endings  </p>
+<p>  svg filters </p>
+</body>
+</html>
