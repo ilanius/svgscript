@@ -95,7 +95,8 @@
     }, {
       'h2':   'Fractal Tree',
       'p':    'Script entry at #"main". Small letters are locally scoped. Transformations pipeline is executed in reverse order. I.e. last transformation added is first performed on the object coordinates. RZR means return if zero.',
-      'code': 'SVG500,500 #"drawTree"($d) RZR,$d $d-- ROT250,422,-35 SCL250,300,1.5 JSR"drawTree"($d) POP POP ROT250,350,45 SCL250,220,2 JSR"drawTree"($d) POP POP SC $COLS[$d] M250,480 L250,20  RTS  #"main"  $COLS=["green","green","gray", "brown", "brown"] SC"BROWN" SW8 $W1=45 $W2=-45  JSR"drawTree"(5)',
+      'code': 'SVG500,500 #"drawTree"($d) RZR,$d $d-- ROT250,422,-35 SCL250,300,1.5 JSR"drawTree"($d) POP POP ROT250,350,45 SCL250,220,2 JSR"drawTree"($d) POP POP ROT250,220,-35 SCL250,130,4 JSR"drawTree"($d) POP POP SC $COLS[$d] M250,480 L250,20 RTS #"main" $COLS=["green","green","gray", "brown", "brown"] SW8 $W1=45 $W2=-45 JSR"drawTree"(5)',      
+      // 'SVG500,500 #"drawTree"($d) RZR,$d $d-- ROT250,422,-35 SCL250,300,1.5 JSR"drawTree"($d) POP POP ROT250,350,45 SCL250,220,2 JSR"drawTree"($d) POP POP SC $COLS[$d] M250,480 L250,20  RTS  #"main"  $COLS=["green","green","gray", "brown", "brown"] SC"BROWN" SW8 $W1=45 $W2=-45  JSR"drawTree"(5)',
     },
  ]; 
   </script>
