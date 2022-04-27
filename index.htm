@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>SvgScript Demo</title>
+  <title>SvgScript Demo Examples </title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css" type="text/css" media="screen,projection"/>
@@ -99,79 +99,44 @@
     },
  ]; 
   </script>
-</head>
-
-<h1>SvgScript Demo</h1>
-<!-- <p>Leonard Ilanius June 2020 </p> -->
-
-<h2>Synopsis </h2>
-<p>
-<br>
- Usage: svgOutText = SvgScript.run('script code'); <br>
-<br>
-SvgScript - shorthand for outputting svg tags. 
-It is an idiosyncratic eclectic mix of 6502 assembler (JSR, jump sub- 
-routine and RTS, return subroutine), postfix script and of course 
-svg-tags. It enables concise coding of the following svg tags: 
-    circle, ellipse, rectangle, line, path, and text<br>
-<br>
-Polyline and filters are not yet included. 
-The following parameters are available:<br>
-        stroke, set stroke color using SC, e.g. SC"GREEN" <br>
-        stroke-width, set using SW, e.g. SW2 <br>
-        fill color, set using F, e.g. F"RED" or F"rgb(255,0,0)". <br>
-The hex coding format ( F"#FF0000" may not work for css background images. <br>
- <br>
-Paths are coded using PS (path start) and PE (path end), e.g. <br>
- PS M250 250 L320 320 PE translates into <br>
- &lt;path d="M250 250 L320 320" fill="?" stroke-width="?" stroke="?" /&gt; <br>
- which is the line (250,250) to (320,320) in the coordinate system. <br>
-<br> 
- Filter functionality is supplied. A filter is a matrix 
- operation that is performed on coordinates and that codes for SCL 
- (scaling), REF (reflection), TRL (translation) and ROT (rotation). 
- They may be added on a stack and the operations are performed in 
- the order last in first executed.  <br>
-<br>
- 
- Variables prefixed with $ can be assigned values using the operators: ++, --, +=,
-  -=, =, /= and *=. Upper case variables are global and lower case
-  are locally scoped <br>
-<br>
-
-</p>
-
-  <br>
-  <div id="outputdiv">
-  </div>
   <script>
-    var out = '';
-    for ( var i in testSuite ) {
-    // for ( var i=19; i < 20; i++  ) {
+    function update() {
+      var inp = document.getElementById( 'scriptin' ).value;
+      var out = SvgScript.run( inp );
+      document.getElementById('scriptout').innerHTML = out;
+      document.getElementById('scriptoutCode').textContent = out;
+    }
+    function runTestSuite() {
+      var out = '';
+      for ( var i in testSuite ) {
+      // for ( var i=19; i < 20; i++  ) {
         var itm = testSuite[i];
         console.log( itm['h2'] );
         var img = SvgScript.run( itm['code'] );
         out += 
-            '<h2>'+ i + '. ' + itm['h2'] + '</h2>' + 
-            '<p>'+ itm['p'] + '</p>' + 
-            img +'<p class="code"><b>CODE:</b><i>'+ 
-            itm['code']+'</i></p><p>' + 
-            'Code:' + itm['code'].length + ' bytes. Image:' + img.length + ' bytes. Ratio:' + (itm['code'].length*100/img.length).toFixed(2) + '% <br><br>';
- 
-    }    
-    document.getElementById('outputdiv').innerHTML = out;
-    
+          '<h2>'+ i + '. ' + itm['h2'] + '</h2>' + 
+          '<p>'+ itm['p'] + '</p>' + 
+          img +'<p class="code"><b>CODE:</b><i>'+ 
+          itm['code']+'</i></p><p>' + 
+          'Code:' + itm['code'].length + ' bytes. Image:' + img.length + ' bytes. Ratio:' + (itm['code'].length*100/img.length).toFixed(2) + '% <br><br>';
+      }
+      return out;
+    }
   </script>
-
+</head>
+<body>
+  <h1>SvgScript Demo</h1>
+  <p>Leonard Ilanius June 2020 </p> 
+  <p>A brief description can be found <a href="svgscript.pdf">here</a></p>
+  <h2>Synopsis </h2>
+  <p>
+    Usage: svgOutText = SvgScript.run('script code'); <br><br>
+  </p>
+  <div id="outputdiv"> </div>
   <script>
-  function update() {
-    var inp = document.getElementById( 'scriptin' ).value;
-    var out = SvgScript.run( inp );
-    document.getElementById('scriptout').innerHTML = out;
-    document.getElementById('scriptoutCode').textContent = out;
-  }
+    document.getElementById('outputdiv').innerHTML = runTestSuite();
   </script>
-
+  
   <h2> Try yourself </h2>
   <table>
     <tr>
