@@ -69,9 +69,8 @@
     }, {
       'h2':   'Spiral of rotated smileys',
       'p':    'Smiley is defined in subroutine. Script entry at #"main"',
-      'code': 'SVG500,500 #"smiley" M250,250 F"RED" CIR50 F"ORANGE" M230,270 Q250,290 270,270 Z M230,235 CIR10 M270,235 CIR10 RTS ' + 
-              '#"main" M0,0 F"ORANGE" RCT500,500 SC"GREEN" SW4 $D=1.05 $N=30 $W=0 $INC=0.1 ' + 
-              '#"loop" ROT250,250,$W SCL250,250,$D TRL190,0 JSR"smiley" POP POP POP $N-- $W+=40 $INC+=0.1 $D+=$INC BNE"loop",$N ',
+      'code': 'SVG500,500 #"smiley" M250,250 F"RED" CIR50 F"ORANGE" M230,270 Q250,290 270,270 Z M230,235 CIR10 M270,235 CIR10 RTS #"main" M0,0 F"ORANGE" RCT500,500 SC"GREEN" SW4 $D=1.05 $N=60 $W=0 #"loop" ROT250,250,$W SCL250,250,$D TRL190,0 JSR"smiley" POP POP POP $N-- $W+=40 $D*=1.11 BNE"loop",$N',
+      // 'code': 'SVG500,500 #"smiley" M250,250 F"RED" CIR50 F"ORANGE" M230,270 Q250,290 270,270 Z M230,235 CIR10 M270,235 CIR10 RTS #"main" M0,0 F"ORANGE" RCT500,500 SC"GREEN" SW4 $D=1.05 $N=30 $W=0 $INC=0.1 #"loop" ROT250,250,$W SCL250,250,$D TRL190,0 JSR"smiley" POP POP POP $N-- $W+=40 $INC+=0.1 $D+=$INC BNE"loop",$N ',
     }, {
       'h2'  : 'Multiple transitive reflections',
       'p'   : 'Subroutine with loop. Using SHIFT. Script entry at #!. Symmetric end result.',
@@ -95,14 +94,13 @@
     }, {
       'h2':   'Fractal Tree',
       'p':    'Script entry at #"main". Small letters are locally scoped. Transformations pipeline is executed in reverse order. I.e. last transformation added is first performed on the object coordinates. RZR means return if zero.',
-      'code': 'SVG500,500 #"drawTree"($d) RZR,$d $d-- ROT250,422,-35 SCL250,300,1.5 JSR"drawTree"($d) POP POP ROT250,350,45 SCL250,220,2 JSR"drawTree"($d) POP POP ROT250,220,-35 SCL250,130,4 JSR"drawTree"($d) POP POP SC $COLS[$d] M250,480 L250,20 RTS #"main" $COLS=["green","green","gray", "brown", "brown"] SW8 $W1=45 $W2=-45 JSR"drawTree"(5)',      
+      'code': 'SVG500,500 #"drawTree"($d) RZR,$d $d-- ROT250,422,-35 SCL250,300,1.5 JSR"drawTree"($d) POP POP ROT250,350,45 SCL250,220,2 JSR"drawTree"($d) POP POP ROT250,220,-35 SCL250,130,4 JSR"drawTree"($d) POP POP SC $COLS[$d] M250,480 L250,20 RTS #"main" $COLS=["green","green","gray", "brown", "brown"] SW8 JSR"drawTree"(5)',      
       // 'SVG500,500 #"drawTree"($d) RZR,$d $d-- ROT250,422,-35 SCL250,300,1.5 JSR"drawTree"($d) POP POP ROT250,350,45 SCL250,220,2 JSR"drawTree"($d) POP POP SC $COLS[$d] M250,480 L250,20  RTS  #"main"  $COLS=["green","green","gray", "brown", "brown"] SC"BROWN" SW8 $W1=45 $W2=-45  JSR"drawTree"(5)',
     },
  ]; 
   </script>
 </head>
 
-<a href="/sanguine/index.htm"> &uarr; TOP  &uarr; </a>
 <h1>SvgScript Demo</h1>
 <!-- <p>Leonard Ilanius June 2020 </p> -->
 
