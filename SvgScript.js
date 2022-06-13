@@ -199,10 +199,10 @@ class SvgScript {
         var SYSTEM   = {  
             '_O' : '<svg xmlns="http://www.w3.org/2000/svg" width="'+itms[1]+'" height="'+itms[2]+'">',  
             'currentTag' : '',       
-            'w0' : itms[1], 'h0' : itms[2], 'x0' : itms[1], 'y0' : itms[2],
-            'X0' : 0,       'Y0' : 0,       'Z0' : 0,       'A0' : 0,      
-            'X1' : 0,       'Y1' : 0,       'Z1' : 0,       'SC' : 'BLACK',       
-            'F'  : 'transparent',           'SW' : '1',     'ID' : '',                         
+            'w0' : itms[1], 'h0' : itms[2], 'x0'         : itms[1], 'y0' : itms[2],
+            'X0' : 0,       'Y0' : 0,       'Z0'         : 0,       'A0' : 0,      
+            'X1' : 0,       'Y1' : 0,       'Z1'         : 0,       'SC' : 'BLACK',       
+            'F'  : 'transparent',           'SW'         : '1',     'ID' : '',                         
             'callArgs': [],                 'scopeLevel' : -1,      'deltapc':0,
         }; /* System variables hash */
         var currentTag     = '';
