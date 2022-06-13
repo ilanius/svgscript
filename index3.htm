@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+  <title>SvgScript Demo Examples </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" type="text/css" media="screen,projection"/>
+  <script src="SvgScript3.js"></script>
+  <script>
+  var testSuite = [
+    {     
+    'h2':   'Test TXT', 
+    'p':    'Variables. Output system variables. Division operator.', 
+    'code': 'SVG500,200 M10,20 TEXT"X121:" m100,0 TEXT"Y1:" ' + 
+            'm50,0 TEXT"F:" m100,0  TEXT"W:" m100,0 TEXT"S:" ' + 
+            'M10,60 $b=137 TEXT$b $b/=2 m50,0 TEXT"b=137/2=" m150,0 TEXT $b ' 
+    }, {
+      'h2':   'Test of loop',
+      'p':    'Lines drawn using absolute and relative coordinates. Parallel lines turning down. ',
+      'code': 'SVG500,500 $Z=250 #"loop" PATH M10,$Z L100,$Z m10,0 L200,$Z l295,295 PEND $Z-=10 BNE"loop",$Z',
+    }, {
+      'h2':   'Trapeze',
+      'p':    'Test of loop and variables. Absolute and relative coordinates.',
+      'code': 'SVG500,500 $N=350 #"loop" PATH M$N,$N l100,0 l0,100 l-50,0 l-50,-100 PEND $N-=10 BNE"loop",$N',   
+    }, {
+      'h2':   'Test of Triangle ',
+      'p':    'There is no svg-triangle-tag so this one is created using the path-tag. TRIANGLE is shorthand for  L x2 y2 L x3 y3 Z. ',
+      'code': 'SVG500,500 #"main" FILL"BLUE" STROKE"RED" WIDTH8 M100,100 TRIANGLE300,100,200,400',         
+    }, {
+      'h2':   'Test of loop and variables.',
+      'p':    'Triangles are drawn using path. Use of variables. Four overlapping triangles - shifted top. All is painted as one figure. N.B.: the use of ID"" to break path :-) ',
+      'code': 'SVG500,210 FILL"GREEN" STROKE"RED" WIDTH3 $N=4 $Z=350 #"loop" M $Z 0 L 75 200 L 225 200 Z $Z-=50 $N-- ID"" BNE"loop",$N',
+    }, {
+      'h2':   'Test Arc, ARC',
+      'p':    'Angle is measured clockwise. Green filled arc goes from 195 to 75 degrees and red filled arc goes from 75 to 190 degreees. In native A you specify start and end points, whereas here you specify center and radii.',
+      'code': 'SVG500,500 WIDTH4 FILL"GREEN" M240,260 ARC50,100,190,75 FILL"RED" M270,225 ARC110,220,75,190 ', 
+    }, {
+      'h2':   'Test of Rectangle, RCT. Swedish Flag',
+      'p':    'The flag is rotated fortyfive degrees clockwise around midpoint (160,100)',
+      'code': 'SVG500,300 WIDTH0 STROKE"NONE" ROTATE45,160,100 FILL"BLUE" M0,0 RECT320,200 FILL"YELLOW" M80,0 RECT40,200 M0,80 RECT320,40 POP',
+    }, {
+      'h2':   'Expanding circle',
+      'p':    'Code entry is at #!. Subroutine and variables used.',
+      'code': 'SVG500,500 #"circle" CIRCLE $R RTS #"main" $R=250 FILL"none" #"loop" M$R,250 JSR"circle" $R-=10 BNE"loop",$R',    
+    }, {
+      'h2':   'Flower' ,
+      'p':    'Application of rotation filter, ROT and POP in loop.',
+      'code': 'SVG500,500 FILL"RED" STROKE"GREEN" WIDTH2 $N=36 $Z=0 #"lp" ROTATE $Z,250,250 M260,250 l140,0 m10,0 CIRCLE10 $Z+=10 POP $N-- BNE"lp",$N', 
+    }, {
+      'h2':   'Path arc',
+      'p':    'Rotation filter is applied to path. By setting ID"" we separate paths into tags that get filled separately.',
+      'code': 'SVG500,500 FILL"BLUE" STROKE"BLACK" WIDTH2 $W=360 #"loop" ID"rotflower" ROTATE $W,250,250 M 150 200 A 100 70 0 0 0 200 100 Z $W-=20 POP BNE"loop",$W ', 
+    }, {
+      'h2':   'Many triangles',
+      'p':    'Figure obtained by rotation, scale and translation. First triangle is drawn with red lines.',
+      'code': 'SVG500,500 WIDTH0.5 FILL"none" STROKE"RED" $N=14 $Z=0 #"b1" ROTATE $Z,250,250 SCALE 1.7,1.7 TRANSLATE-70,0 M200,220 TRIANGLE300,220,250,110 STROKE"BLACK" $Z+=20 $N-- POP POP POP BNE"b1",$N',
+        
+    }, {
+      'h2':   'Test of circle, CR, and ellipse, EL',
+      'p':    'Ellipse here is drawn using the arc, A, command in a path tag. Ellipse with hole is rotated fortyfive degrees.',
+      'code': 'SVG500,500 FILL"YELLOW" STROKE"RED" WIDTH10 M60,60 CIRCLE430 STROKE"BLUE" FILL"ORANGE" ROTATE 45,250,250 M250,250 ELLIPSE 80,200 POP M250,250 WIDTH5 FILL"WHITE" CIRCLE10' , 
+    }, {
+      'h2':   'Test of Ellipse, ELL, command',
+      'p':    'Many ellipses',
+      'code': 'SVG500,500 FILL"none" $N=18 $B=200 $D=10 #"b1" M250,250 ELLIPSE $B,$D $B-=10 $D+=10 $N-- BNE"b1",$N ', 
+    }, {
+      'h2':   'Geometric figure.',
+      'p':    'Quadratic Bezier curve with applied rotation SCL .,.,1 means no scaling.',
+      'code': 'SVG500,500 STROKE"BLACK" WIDTH1 SCALE 0.7,0.7 TRANSLATE 100,100 $W=360 #"loop" FILL"TRANSPARENT" ROTATE $W,250,250 M10,80 Q 52.5 10 95 80 t 180 0 Z CIRCLE 20 FILL"RED" CIRCLE 10 $W-=20 POP BNE"loop",$W M250,250 FILL"YELLOW" CIRCLE 130 POP POP', 
+    }, {
+      'h2':   'Spiral of rotated smileys',
+      'p':    'Smiley is defined in subroutine. Script entry at #"main"',
+      'code': 'SVG500,500 #"smiley" SCALE 1.5,1.5 FILL "RED" M50,0 CIRCLE 50 FILL "ORANGE" M30,20 Q50,40 70,20 Z M30,-15 CIRCLE 10 M70,-15 CIRCLE 10 POP RTS #"main" FILL "ORANGE" M0,0 RECT500,500 STROKE "GREEN" WIDTH 4 $D=1.5 $ID=1 $ID/=$D $N=60 $W=0 TRANSLATE250,250 #"loop" SCALE $ID,$ID ROTATE $W,0,0 TRANSLATE 250,0 JSR"smiley" POP POP POP $N-- $W+=40 $D*=1.1 $ID=1 $ID/=$D BNE"loop",$N POP',
+
+      // 'code': 'SVG500,500 #"smiley" M250,250 F"RED" CIR50 F"ORANGE" M230,270 Q250,290 270,270 Z M230,235 CIR10 M270,235 CIR10 RTS #"main" M0,0 F"ORANGE" RCT500,500 SC"GREEN" SW4 $D=1.05 $N=30 $W=0 $INC=0.1 #"loop" ROT250,250,$W SCL250,250,$D TRL190,0 JSR"smiley" POP POP POP $N-- $W+=40 $INC+=0.1 $D+=$INC BNE"loop",$N ',
+    }, {
+      'h2'  : 'Multiple transitive reflections',
+      'p'   : 'Subroutine with loop. Symmetric end result.',
+      'code': 'SVG500,500 #"rotFlower" FILL"RED" STROKE"GREEN" WIDTH 2 $N=18 $Z=0 ' + 
+              'TRANSLATE 40,40 #"lp" ROTATE $Z,100,100 M110,100 l50,0 CIRCLE5 $Z+=20 POP $N-- BNE"lp",$N POP RTS' +
+              '#"main" FILL "LIGHTGRAY" M0,0 RECT500,500 ' + 
+              'TRANSLATE 0,0 REFLECTION 250,250,260,250 REFLECTION 250,250,250,260 REFLECTION 250,250,260,250 ' + 
+              '$N2=4 #"mlop" JSR"rotFlower" POP $N2-- BNE"mlop",$N2 ',
+    }, {
+      'h2':   'More transitive reflections',
+      'p':    'Rotations, reflections and scaling of square for cool effect. There should be a way to do this without reflections. ',
+      'code': 'SVG500,500 #"zoomfigure" $I=20 $W=250 $V=0 ' + 
+              '#"rect" ROTATE $V,125,125 $Z=250 $Z-=$W $Z/=2 M$Z,$Z RECT $W,$W POP $W*=0.79 $V+=18 $I-- BNE"rect",$I RTS ' + 
+              '#"main" STROKE"RED" WIDTH 1 ' + 
+              'REFLECTION 250,250,260,250 REFLECTION 250,250,250,260 REFLECTION 250,250,260,250 ' + 
+              '$J=4 #"mainloop" JSR"zoomfigure" POP $J-- BNE"mainloop",$J ', 
+    }, {
+      'h2':   'More transitive reflections - higher line density',
+      'p':    'Same as previous but higher line density.',
+      'code':   'SVG500,500 #"zoomfigure" $I=61 $W=250 $V=0  #"rect" ROTATE $V,125,125 ' + 
+                '$Z=250 $Z-=$W $Z/=2 M$Z,$Z RECT$W,$W POP $W*=0.95 $V+=3 $I-- BNE"rect",$I RTS ' + 
+                '#"main" STROKE"RED" WIDTH 1 ' + 
+                'REFLECTION 250,250,260,250 REFLECTION 250,250,250,260 REFLECTION 250,250,260,250 ' + 
+                '$J=4 #"mainloop" JSR"zoomfigure" POP $J-- BNE"mainloop",$J  ', 
+    }, {
+      'h2':   'More translations and rotations and scale of square',
+      'p':    'Cool effect. PERSPECTIVE works by setting a perspective point and simulating a distance. 1 == no scaling ',
+      'code':   'SVG500,500 #"zoomfigure" $I=40 $V=0 $D=1 ' + 
+                '#"rect" ' +
+                'PERSPECTIVE 125,125,$D ROTATE $V,125,125 ' + 
+                'M0,0 RECT250,250 ' + 
+                '$V+=4 $D*=1.07 $I-- POP POP BNE"rect",$I RTS ' + 
+                '#"main" STROKE"RED" WIDTH2 ' + 
+                'JSR"zoomfigure" ' + 
+                'TRANSLATE 250,0 JSR"zoomfigure" POP ' + 
+                'TRANSLATE 0,250 JSR"zoomfigure" POP ' + 'TRANSLATE250,250 JSR"zoomfigure" POP',
+    }, {
+      'h2':   'Fractal Tree',
+      'p':    'Script entry at #"main". Small letters are locally scoped. Transformations pipeline is executed in reverse order. I.e. last transformation added is first performed on the object coordinates. RZR means return if zero.',
+      'code':   'SVG500,500 ' + 
+                '#"drawTree"($d) ' + 
+                'RZR,$d ' + 
+                '$d-- ' + 
+
+                'ROTATE -35,250,422 ' + 
+                'PERSPECTIVE 250,300,1.5 ' + 
+                'JSR"drawTree"($d) ' + 
+                'POP POP ' + 
+
+                'ROTATE 45,250,350 ' + 
+                'PERSPECTIVE 250,220,2 ' + 
+                'JSR"drawTree"($d) ' + 
+                'POP POP ' + 
+
+                'ROTATE -35,250,220 ' + 
+                'PERSPECTIVE 250,130,4 ' + 
+                'JSR"drawTree"($d) ' + 
+                'POP POP ' +
+
+                'STROKE $COLS[$d] ' + 
+                'M250,480 L250,20 ' + 
+                'RTS ' + 
+                '#"main" ' + 
+                '$COLS=["green","green","gray", "brown", "brown"] WIDTH8 ' + 
+                'JSR"drawTree"(5)',      
+    },
+ ]; 
+  </script>
+  <script>
+    function update() {
+      var inp = document.getElementById( 'scriptin' ).value;
+      var out = SvgScript.run( inp );
+        console.log( out );
+      document.getElementById('scriptout').innerHTML = out;
+      document.getElementById('scriptoutCode').textContent = out;
+    }
+    function runTestSuite() {
+      var out = '';
+        for ( var i in testSuite ) {
+ //       for ( var i=0; i < 20; i++  ) {
+       
+        var itm = testSuite[i];
+        console.log( itm['h2'] );
+        var img = SvgScript.run( itm['code'] );
+        out += 
+          '<h2>'+ i + '. ' + itm['h2'] + '</h2>' + 
+          '<p>'+ itm['p'] + '</p>' + 
+          img +'<p class="code"><b>CODE:</b><i>'+ 
+          itm['code']+'</i></p><p>' + 
+          'Code:' + itm['code'].length + ' bytes. Image:' + img.length + ' bytes. Ratio:' + (itm['code'].length*100/img.length).toFixed(2) + '% <br><br>';
+      }
+      return out;
+    }
+  </script>
+</head>
+<body>
+  <h1>SvgScript Demo</h1>
+  <p>Leonard Ilanius June 2020 </p> 
+  <p>A brief description can be found <a href="SvgScript.pdf">here</a></p>
+  <h2>Synopsis </h2>
+  <p>
+    Usage: svgOutText = SvgScript.run('script code'); <br><br>
+  </p>
+  <div id="outputdiv"> </div>
+  <script>
+    document.getElementById('outputdiv').innerHTML = runTestSuite();
+  </script>
+  
+  <h2> Try yourself </h2>
+  <table>
+    <tr>
+     <th>Image </th> <th>Generated Code </th>
+    </tr>
+    <tr>
+      <td>
+        <div id="scriptout" class="scriptout" ></div> 
+      </td>
+      <td>
+        <div id="scriptoutCode" class="scriptout"></div> 
+      </td>
+    </tr>
+  </table>
+
+  <br>
+  <p>Enter code here and press update.</p>
+  <textarea rows="6" id="scriptin" name="scriptin">SVG500,500 WIDTH 2 FILL"RED" M100,100 RECT300,300 FILL"WHITE" M250,250 CIRCLE170 FILL"RED" M250,130 TRIANGLE 350,350,150,350
+  </textarea><br>
+  <button onclick="update();">update</button>
+  <script>
+   update();
+  </script>
+<br> <br> <br>
+<br> <br> <br>
+<br> <br> <br>
+<p> TODO</p>
+<p> color #DDEEAA to RGA()</p>
+<p>  line endings  </p>
+<p>  svg filters </p>
+</body>
+</html>
