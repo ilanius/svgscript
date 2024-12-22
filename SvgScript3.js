@@ -304,7 +304,8 @@ class SvgScript {
                 } else if ( itm == 'FILL' || itm == 'STROKE' || itm == 'WIDTH' || itm == 'ID' ) { /*F fill, SC stroke color */
                     this.movePathToOut(SYSTEM, tplPath );
                     var v = this.getVal( SYSTEM, itms, pc );
-                    SYSTEM[itm] = v.replace( /"/g, '' );
+                    if ( typeof v === 'string' ) v.replace( /"/g, '' ); // v may be a number 22 dec 2024 
+                    SYSTEM[itm] = v;
                     pc = 1*SYSTEM['nextpc'];
                 } else if ( itm == 'CLASS' ) {
                     var v = this.getVal( SYSTEM, itms, pc );
