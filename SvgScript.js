@@ -358,7 +358,7 @@ class SvgScript {
                 } else if ( itm == 'F' || itm == 'SC' || itm == 'SW' || itm == 'ID' ) { /*F fill, SC stroke color */
                     this.flush(SYSTEM, tplPath, transformPipe );
                     var v = this.getVal( SYSTEM, itms, pc );
-                    if ( typeof v === 'string' ) v.replace( /"/g, '' ); // v may be a number 22 dec 2024 
+                    if ( typeof v === 'string' ) v = v.replace( /"/g, '' ); // v may be a number 22 dec 2024 
                     SYSTEM[itm] = v;
                     pc = 1*SYSTEM['nextpc'];
                 } else { // coordinate transform pipeline
